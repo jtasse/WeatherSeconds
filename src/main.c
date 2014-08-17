@@ -7,18 +7,19 @@
 
 static Window *window;
 
-GFont futura_18;
+/*GFont futura_18;
 GFont futura_25;
 GFont futura_28;
 GFont futura_35;
+GFont futura_53;*/
 GFont futura_40;
-GFont futura_53;
+
 
 static Layer *statusbar_layer;
 static BitmapLayer *statusbar_battery_layer;
 static BitmapLayer *statusbar_connection_layer;
-static uint32_t statusbar_battery_resource;
-static uint32_t statusbar_connection_resource;
+//static uint32_t statusbar_battery_resource;
+//static uint32_t statusbar_connection_resource;
 static GBitmap *statusbar_battery_bitmap = NULL;
 static GBitmap *statusbar_connection_bitmap = NULL;
 static GRect default_statusbar_frame;
@@ -39,7 +40,7 @@ static Preferences *prefs;
 static Weather *weather;
 
 
-
+/*
 uint32_t get_resource_for_weather_conditions(WeatherConditions  conditions) {
 	bool is_day = conditions.flags & WEATHER_CONDITION_FLAGS_IS_DAY;
     switch(conditions.code) {
@@ -110,13 +111,13 @@ uint32_t get_resource_for_battery_state(BatteryChargeState battery) {
 		return battery.is_charging ? RESOURCE_ID_CHARGING_10  : RESOURCE_ID_BATTERY_10;
 	
 	return battery.is_charging ? RESOURCE_ID_CHARGING_0 : RESOURCE_ID_BATTERY_0;
-}
+} 
 
 uint32_t get_resource_for_connection(bool bluetooth, bool internet) {
 	if(!bluetooth)
 		return RESOURCE_ID_NO_BLUETOOTH;
 	return internet ? RESOURCE_ID_BLUETOOTH_INTERNET : RESOURCE_ID_BLUETOOTH_NO_INTERNET;
-}
+}*/
 
 
 
@@ -274,7 +275,7 @@ void set_weather_visible_animation_stopped_handler(Animation *animation, bool fi
 
 
 void update_weather_info(Weather *weather, bool animate) {
-    if(weather->conditions.code != WEATHER_CONDITIONS_UNAVAILABLE) {
+ //   if(weather->conditions.code != WEATHER_CONDITIONS_UNAVAILABLE) {
         static char temperature_text[8];
 		int temperature = weather_convert_temperature(weather->temperature, prefs->temp_format);
 		
@@ -284,7 +285,7 @@ void update_weather_info(Weather *weather, bool animate) {
 		// TODO: Move this block to another method
         if(10 <= temperature && temperature <= 99) {
             layer_set_frame(text_layer_get_layer(weather_temperature_layer), GRect(70, 19+3, 72, 80));
-            text_layer_set_font(weather_temperature_layer, futura_35);
+            text_layer_set_font(weather_temperature_layer, futura_40);
         }
         else if((0 <= temperature && temperature <= 9) || (-9 <= temperature && temperature <= -1)) {
             layer_set_frame(text_layer_get_layer(weather_temperature_layer), GRect(70, 19, 72, 80));
@@ -292,23 +293,23 @@ void update_weather_info(Weather *weather, bool animate) {
         }
         else if((100 <= temperature) || (-99 <= temperature && temperature <= -10)) {
             layer_set_frame(text_layer_get_layer(weather_temperature_layer), GRect(70, 19+3, 72, 80));
-            text_layer_set_font(weather_temperature_layer, futura_28);
+            text_layer_set_font(weather_temperature_layer, futura_40);
         }
         else {
             layer_set_frame(text_layer_get_layer(weather_temperature_layer), GRect(70, 19+6, 72, 80));
-            text_layer_set_font(weather_temperature_layer, futura_25);
+            text_layer_set_font(weather_temperature_layer, futura_40);
         }
         
-        if(weather_icon_bitmap)
+       /* if(weather_icon_bitmap)
             gbitmap_destroy(weather_icon_bitmap);
         weather_icon_bitmap = gbitmap_create_with_resource(get_resource_for_weather_conditions(weather->conditions));
-        bitmap_layer_set_bitmap(weather_icon_layer, weather_icon_bitmap);
+        bitmap_layer_set_bitmap(weather_icon_layer, weather_icon_bitmap); */
 		
 		set_weather_visible(true, animate);
-    }
+  //  } //end if weather conditions != unavailable
 }
 
-void update_connection_info(bool bluetooth, bool internet) {
+/*void update_connection_info(bool bluetooth, bool internet) {
 	uint32_t new_connection_resource = get_resource_for_connection(bluetooth, internet);
 	
 	if(!statusbar_connection_bitmap || new_connection_resource != statusbar_connection_resource) {
@@ -322,7 +323,7 @@ void update_connection_info(bool bluetooth, bool internet) {
 		layer_mark_dirty(bitmap_layer_get_layer(statusbar_connection_layer));
 		layer_mark_dirty(statusbar_layer);
 	}
-}
+}*/
 
 
 
@@ -348,7 +349,7 @@ void in_received_handler(DictionaryIterator *received, void *context) {
 		update_weather_info(weather, true);
 		
 		// Receiving weather info means we (probably) have internet!
-		update_connection_info(bluetooth_connection_service_peek(), has_internet_connection(weather));
+	//	update_connection_info(bluetooth_connection_service_peek(), has_internet_connection(weather));
 	}
 	
 	if(set_preferences) {
@@ -459,13 +460,14 @@ void init() {
 
 void window_load(Window *window) {
     Layer *window_layer = window_get_root_layer(window);
-    
+  /*Bitham_42 = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_FUTURA_18));
     futura_18 = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_FUTURA_18));
     futura_25 = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_FUTURA_25));
     futura_28 = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_FUTURA_28));
     futura_35 = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_FUTURA_35));
+   futura_53 = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_FUTURA_CONDENSED_53))*/
     futura_40 = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_FUTURA_40));
-    futura_53 = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_FUTURA_CONDENSED_53));
+   ;
 	
 	
 	
@@ -485,14 +487,14 @@ void window_load(Window *window) {
     text_layer_set_text_alignment(time_layer, GTextAlignmentCenter);
     text_layer_set_background_color(time_layer, GColorClear);
     text_layer_set_text_color(time_layer, GColorWhite);
-    text_layer_set_font(time_layer, futura_53);
+    text_layer_set_font(time_layer, futura_40);
     layer_add_child(window_layer, text_layer_get_layer(time_layer));
     
     date_layer = text_layer_create(default_date_frame = GRect(1, 74, 144, 106));
     text_layer_set_text_alignment(date_layer, GTextAlignmentCenter);
     text_layer_set_background_color(date_layer, GColorClear);
     text_layer_set_text_color(date_layer, GColorWhite);
-    text_layer_set_font(date_layer, futura_18);
+    text_layer_set_font(date_layer, futura_40);
     layer_add_child(window_layer, text_layer_get_layer(date_layer));
     
     
@@ -518,13 +520,13 @@ void window_load(Window *window) {
 	
 	
 	tick_timer_service_subscribe(MINUTE_UNIT, handle_tick);
-	battery_state_service_subscribe(handle_battery);
-	bluetooth_connection_service_subscribe(handle_bluetooth);
+	//battery_state_service_subscribe(handle_battery);
+	//bluetooth_connection_service_subscribe(handle_bluetooth);
     
 	// "Force" an update for each subscribed service (draws everything, since we're only drawing what we need)
     force_tick(ALL_UNITS);
-	handle_battery(battery_state_service_peek());
-	handle_bluetooth(bluetooth_connection_service_peek());
+	//handle_battery(battery_state_service_peek());
+//	handle_bluetooth(bluetooth_connection_service_peek());
 }
 
 void window_unload(Window *window) {
@@ -545,12 +547,13 @@ void window_unload(Window *window) {
 	bitmap_layer_destroy(statusbar_connection_layer);
 	layer_destroy(statusbar_layer);
     
-    fonts_unload_custom_font(futura_18);
+  /*  fonts_unload_custom_font(futura_18);
     fonts_unload_custom_font(futura_25);
     fonts_unload_custom_font(futura_28);
     fonts_unload_custom_font(futura_35);
+   fonts_unload_custom_font(futura_53); */
     fonts_unload_custom_font(futura_40);
-    fonts_unload_custom_font(futura_53);
+   
 }
 
 void deinit() {
@@ -578,13 +581,13 @@ void handle_tick(struct tm *now, TimeUnits units_changed) {
     if(outdated || weather_needs_update(weather, prefs->weather_update_freq)) {
         weather_request_update();
 	}
-	if(outdated) {
+/*	if(outdated) {
 		set_weather_visible(false, true);
 		update_connection_info(bluetooth_connection_service_peek(), has_internet_connection(weather));
-	}
+	}*/
 }
 
-void handle_battery(BatteryChargeState battery) {
+/*void handle_battery(BatteryChargeState battery) {
 	uint32_t new_battery_resource = get_resource_for_battery_state(battery);
 	if(!statusbar_battery_bitmap || new_battery_resource != statusbar_battery_resource) {
 		statusbar_battery_resource = new_battery_resource;
@@ -597,15 +600,15 @@ void handle_battery(BatteryChargeState battery) {
 		layer_mark_dirty(bitmap_layer_get_layer(statusbar_battery_layer));
 		layer_mark_dirty(statusbar_layer);
 	}
-}
+} */
 
-void handle_bluetooth(bool connected) {
+/*void handle_bluetooth(bool connected) {
 	update_connection_info(connected, has_internet_connection(weather));
 	
 	if(!connected) {
 		vibes_long_pulse();
 	}
-}
+}*/
 
 
 
