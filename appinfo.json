@@ -1,0 +1,26 @@
+{
+    "appKeys": {},
+    "capabilities": [
+        "location",
+        "configurable"
+    ],
+    "companyName": "james.tasse@gmail.com",
+    "longName": "WeatherSeconds",
+    "projectType": "native",
+    "resources": {
+        "media": [
+            {
+                "file": "fonts/futura_condensed_bold-webfont.ttf",
+                "name": "FONT_FUTURA_36",
+                "type": "font"
+            }
+        ]
+    },
+    "shortName": "WeatherSeconds",
+    "uuid": "2756e5b8-d21b-47ba-ad4d-d072d3b66577",
+    "versionCode": 1,
+    "versionLabel": "1.0",
+    "watchapp": {
+        "watchface": true
+    }
+}
