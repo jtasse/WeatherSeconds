@@ -7,11 +7,12 @@
 
 static Window *window;
 
-/*GFont futura_18;
+/*
 GFont futura_25;
 GFont futura_28;
 GFont futura_35;
 GFont futura_53;*/
+GFont futura_18;
 GFont futura_40;
 
 
@@ -285,19 +286,19 @@ void update_weather_info(Weather *weather, bool animate) {
 		// TODO: Move this block to another method
         if(10 <= temperature && temperature <= 99) {
             layer_set_frame(text_layer_get_layer(weather_temperature_layer), GRect(70, 19+3, 72, 80));
-            text_layer_set_font(weather_temperature_layer, futura_40);
+            text_layer_set_font(weather_temperature_layer, futura_18);
         }
         else if((0 <= temperature && temperature <= 9) || (-9 <= temperature && temperature <= -1)) {
             layer_set_frame(text_layer_get_layer(weather_temperature_layer), GRect(70, 19, 72, 80));
-            text_layer_set_font(weather_temperature_layer, futura_40);
+            text_layer_set_font(weather_temperature_layer, futura_18);
         }
         else if((100 <= temperature) || (-99 <= temperature && temperature <= -10)) {
             layer_set_frame(text_layer_get_layer(weather_temperature_layer), GRect(70, 19+3, 72, 80));
-            text_layer_set_font(weather_temperature_layer, futura_40);
+            text_layer_set_font(weather_temperature_layer, futura_18);
         }
         else {
             layer_set_frame(text_layer_get_layer(weather_temperature_layer), GRect(70, 19+6, 72, 80));
-            text_layer_set_font(weather_temperature_layer, futura_40);
+            text_layer_set_font(weather_temperature_layer, futura_18);
         }
         
        /* if(weather_icon_bitmap)
@@ -461,13 +462,13 @@ void init() {
 void window_load(Window *window) {
     Layer *window_layer = window_get_root_layer(window);
   /*Bitham_42 = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_FUTURA_18));
-    futura_18 = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_FUTURA_18));
     futura_25 = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_FUTURA_25));
     futura_28 = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_FUTURA_28));
     futura_35 = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_FUTURA_35));
    futura_53 = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_FUTURA_CONDENSED_53))*/
-    futura_40 = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_FUTURA_40));
-   ;
+   futura_18 = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_FUTURA_18));
+  futura_40 = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_FUTURA_40));
+   
 	
 	
 	
@@ -547,12 +548,13 @@ void window_unload(Window *window) {
 	bitmap_layer_destroy(statusbar_connection_layer);
 	layer_destroy(statusbar_layer);
     
-  /*  fonts_unload_custom_font(futura_18);
+  /*  
     fonts_unload_custom_font(futura_25);
     fonts_unload_custom_font(futura_28);
     fonts_unload_custom_font(futura_35);
    fonts_unload_custom_font(futura_53); */
-    fonts_unload_custom_font(futura_40);
+    fonts_unload_custom_font(futura_18);
+  fonts_unload_custom_font(futura_40);
    
 }
 
