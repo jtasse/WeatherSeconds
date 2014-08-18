@@ -18,6 +18,11 @@
                 "file": "fonts/futura_condensed_bold-webfont.ttf",
                 "name": "FONT_FUTURA_36",
                 "type": "font"
+            },
+            {
+                "file": "fonts/futura.ttf",
+                "name": "FONT_FUTURA_18",
+                "type": "font"
             }
         ]
     },
