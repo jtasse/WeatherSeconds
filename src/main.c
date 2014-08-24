@@ -277,14 +277,21 @@ void set_weather_visible_animation_stopped_handler(Animation *animation, bool fi
 
 void update_weather_info(Weather *weather, bool animate) {
  //   if(weather->conditions.code != WEATHER_CONDITIONS_UNAVAILABLE) {
-        static char temperature_text[8];
+      /*  static char temperature_text[8];
 		int temperature = weather_convert_temperature(weather->temperature, prefs->temp_format);
 		
-        snprintf(temperature_text, 8, "%d\u00B0", temperature);
-        text_layer_set_text(weather_temperature_layer, temperature_text);
+        snprintf(temperature_text, 8, "%d\u00B0", temperature); */
+       // text_layer_set_text(weather_temperature_layer, "TEST");
+        text_layer_set_background_color(weather_temperature_layer, GColorWhite);
+        text_layer_set_text_color(weather_temperature_layer, GColorWhite);
+        layer_set_frame(text_layer_get_layer(weather_temperature_layer), GRect(70, 19+3, 72, 80));
+            text_layer_set_font(weather_temperature_layer, futura_18);
         
+   layer_set_frame(text_layer_get_layer(weather_temperature_layer), GRect(70, 19+3, 72, 80));
+            text_layer_set_font(weather_temperature_layer, futura_18);
+  
 		// TODO: Move this block to another method
-        if(10 <= temperature && temperature <= 99) {
+       /* if(10 <= temperature && temperature <= 99) {
             layer_set_frame(text_layer_get_layer(weather_temperature_layer), GRect(70, 19+3, 72, 80));
             text_layer_set_font(weather_temperature_layer, futura_18);
         }
@@ -298,8 +305,8 @@ void update_weather_info(Weather *weather, bool animate) {
         }
         else {
             layer_set_frame(text_layer_get_layer(weather_temperature_layer), GRect(70, 19+6, 72, 80));
-            text_layer_set_font(weather_temperature_layer, futura_18);
-        }
+            text_layer_set_font(weather_temperature_layer, futura_18); 
+        } */
         
        /* if(weather_icon_bitmap)
             gbitmap_destroy(weather_icon_bitmap);
@@ -495,24 +502,31 @@ void window_load(Window *window) {
     text_layer_set_text_alignment(date_layer, GTextAlignmentCenter);
     text_layer_set_background_color(date_layer, GColorClear);
     text_layer_set_text_color(date_layer, GColorWhite);
-    text_layer_set_font(date_layer, futura_40);
+    text_layer_set_font(date_layer, futura_18);
     layer_add_child(window_layer, text_layer_get_layer(date_layer));
     
     
 	
-    weather_layer = layer_create(default_weather_frame = GRect(0, 90, 144, 80));
-    
+    weather_layer = layer_create(default_weather_frame = GRect(0, 0, 50, 50));
     weather_icon_layer = bitmap_layer_create(GRect(9, 13, 60, 60));
     layer_add_child(weather_layer, bitmap_layer_get_layer(weather_icon_layer));
     
-    weather_temperature_layer = text_layer_create(GRect(70, 19, 72, 80));
-    text_layer_set_text_color(weather_temperature_layer, GColorWhite);
-    text_layer_set_background_color(weather_temperature_layer, GColorClear);
-    text_layer_set_font(weather_temperature_layer, futura_40);
-    text_layer_set_text_alignment(weather_temperature_layer, GTextAlignmentRight);
-    layer_add_child(weather_layer, text_layer_get_layer(weather_temperature_layer));
+    weather_temperature_layer = text_layer_create(GRect(1, 135, 144, 106));
+    text_layer_set_text_color(weather_temperature_layer, GColorBlack);
+    text_layer_set_background_color(weather_temperature_layer, GColorWhite);
+    text_layer_set_font(weather_temperature_layer, futura_18);
+    text_layer_set_text_alignment(weather_temperature_layer, GTextAlignmentCenter);
+    layer_add_child(window_layer, weather_layer);  
+    layer_add_child(window_layer, text_layer_get_layer(weather_temperature_layer));
     
-    layer_add_child(window_layer, weather_layer);
+  
+  
+    //show temperature
+     static char temperature_text[8];
+		int temperature = weather_convert_temperature(weather->temperature, prefs->temp_format);
+		
+        snprintf(temperature_text, 8, "%d\u00B0", temperature);
+     text_layer_set_text(weather_temperature_layer, temperature_text);
 	
 	
 	
