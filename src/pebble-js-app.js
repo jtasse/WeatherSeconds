@@ -1,5 +1,9 @@
+//trying this outside the function
+UUID PEBBLE_APP_UUID = UUID.fromString("2756e5b8-d21b-47ba-ad4d-d072d3b66577");
 function Preferences() {
-	this.tempFormat = 1;
+	//Use UUID from watch
+  //static UUID APP_UID = UUID.fromString("2756e5b8-d21b-47ba-ad4d-d072d3b66577");
+  this.tempFormat = 1;
 	this.weatherUpdateFreq = 10 * 60;
 	this.statusbar = 0;
 	this.weatherProvider = 1;

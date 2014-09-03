@@ -50,7 +50,7 @@ unsigned int url_decode(char const* encoded, char* decoded, size_t decoded_size)
 
 Preferences* preferences_load() {
 	static Preferences prefs = {
-		.temp_format = TEMP_FORMAT_CELCIUS,
+		.temp_format = TEMP_FORMAT_FAHRENHEIT,
 		.weather_update_freq = 10 * 60,
 		.statusbar = false,
 		.weather_provider = 1,

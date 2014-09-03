@@ -40,6 +40,27 @@ GRect default_weather_frame;
 static Preferences *prefs;
 static Weather *weather;
 
+//diagnostic info
+char *translate_error(AppMessageResult result) {
+  switch (result) {
+    case APP_MSG_OK: return "APP_MSG_OK";
+    case APP_MSG_SEND_TIMEOUT: return "APP_MSG_SEND_TIMEOUT";
+    case APP_MSG_SEND_REJECTED: return "APP_MSG_SEND_REJECTED";
+    case APP_MSG_NOT_CONNECTED: return "APP_MSG_NOT_CONNECTED";
+    case APP_MSG_APP_NOT_RUNNING: return "APP_MSG_APP_NOT_RUNNING";
+    case APP_MSG_INVALID_ARGS: return "APP_MSG_INVALID_ARGS";
+    case APP_MSG_BUSY: return "APP_MSG_BUSY";
+    case APP_MSG_BUFFER_OVERFLOW: return "APP_MSG_BUFFER_OVERFLOW";
+    case APP_MSG_ALREADY_RELEASED: return "APP_MSG_ALREADY_RELEASED";
+    case APP_MSG_CALLBACK_ALREADY_REGISTERED: return "APP_MSG_CALLBACK_ALREADY_REGISTERED";
+    case APP_MSG_CALLBACK_NOT_REGISTERED: return "APP_MSG_CALLBACK_NOT_REGISTERED";
+    case APP_MSG_OUT_OF_MEMORY: return "APP_MSG_OUT_OF_MEMORY";
+    case APP_MSG_CLOSED: return "APP_MSG_CLOSED";
+    case APP_MSG_INTERNAL_ERROR: return "APP_MSG_INTERNAL_ERROR";
+    default: return "UNKNOWN ERROR";
+  }
+}
+
 
 /*
 uint32_t get_resource_for_weather_conditions(WeatherConditions  conditions) {
@@ -282,7 +303,12 @@ void update_weather_info(Weather *weather, bool animate) {
 		
         snprintf(temperature_text, 8, "%d\u00B0", temperature); */
        // text_layer_set_text(weather_temperature_layer, "TEST");
-        text_layer_set_background_color(weather_temperature_layer, GColorWhite);
+         weather_request_update();
+  //update_weather_info(weather, true);
+  //weather_set(weather, received);
+		
+         
+  text_layer_set_background_color(weather_temperature_layer, GColorWhite);
         text_layer_set_text_color(weather_temperature_layer, GColorWhite);
         layer_set_frame(text_layer_get_layer(weather_temperature_layer), GRect(70, 19+3, 72, 80));
             text_layer_set_font(weather_temperature_layer, futura_18);
@@ -344,14 +370,22 @@ void animation_stopped_handler(Animation *animation, bool finished, void *contex
 void out_sent_handler(DictionaryIterator *sent, void *context) {
 }
 
-void out_failed_handler(DictionaryIterator *failed, AppMessageResult reason, void *context) {
-    APP_LOG(APP_LOG_LEVEL_ERROR, "Sending message failed (reason: %d)", (int)reason);
+//void out_failed_handler(DictionaryIterator *failed, AppMessageResult reason, void *context) {
+    //APP_LOG(APP_LOG_LEVEL_ERROR, "Sending message failed (reason: %d)", (int)reason);
+  //APP_LOG_LEVEL_ERROR, translate_error(AppMessageResult result); 
+  //translate_error(AppMessageResult result);
+  void out_failed_handler(DictionaryIterator *failed, AppMessageResult reason, void *context) {
+   APP_LOG(APP_LOG_LEVEL_DEBUG, "In dropped: %i - %s", reason, translate_error(reason));
 }
 
 void in_received_handler(DictionaryIterator *received, void *context) {
 	Tuple *set_weather = dict_find(received, SET_WEATHER_MSG_KEY);
 	Tuple *set_preferences = dict_find(received, SET_PREFERENCES_MSG_KEY);
 	
+    // weather_request_update();
+  //weather_set(weather, received);
+		//update_weather_info(weather, true);
+  
 	if(set_weather) {
 		weather_set(weather, received);
 		update_weather_info(weather, true);
@@ -487,7 +521,7 @@ void window_load(Window *window) {
 	statusbar_connection_layer = bitmap_layer_create(GRect(3, 3, 24, 11));
 	layer_add_child(statusbar_layer, bitmap_layer_get_layer(statusbar_connection_layer));
 	
-	layer_add_child(window_layer, statusbar_layer);
+	layer_add_child(window_layer, statusbar_layer); 
 	
 	
     
@@ -554,13 +588,13 @@ void window_unload(Window *window) {
     bitmap_layer_destroy(weather_icon_layer);
     layer_destroy(weather_layer);
 	
-	if(statusbar_battery_bitmap)
+	/*if(statusbar_battery_bitmap)
 		gbitmap_destroy(statusbar_battery_bitmap);
 	if(statusbar_connection_bitmap)
 		gbitmap_destroy(statusbar_connection_bitmap);
 	bitmap_layer_destroy(statusbar_battery_layer);
 	bitmap_layer_destroy(statusbar_connection_layer);
-	layer_destroy(statusbar_layer);
+	layer_destroy(statusbar_layer); */
     
   /*  
     fonts_unload_custom_font(futura_25);
@@ -625,10 +659,6 @@ void handle_tick(struct tm *now, TimeUnits units_changed) {
 		vibes_long_pulse();
 	}
 }*/
-
-
-
-
 
 void force_tick(TimeUnits units_changed) {
     time_t then = time(NULL);
